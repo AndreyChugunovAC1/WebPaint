@@ -2,6 +2,7 @@
 // web paint by AC1 and FB4
 
 const { Socket } = require('dgram');
+const { FORMERR } = require('dns');
 let app = require('express')();
 let server = require('http').Server(app);
 let io = require('socket.io')(server);
@@ -11,6 +12,24 @@ let top = 0, right = 0, left = 0, bottom = 0;
 let width = 0, height = 0;
 let first = true;
 let color;
+
+// remake array function !!!!!!!
+/*
+function recreateArray(l1, r1, t1, b1, l2, r2, t2, b2) {
+  width = r2 - l2;
+  height = b2 - t2;
+  let array2 = Array()
+  for (x = 0; x < r2 - l2; x++) {
+    for (y = 0; y < b2 - t2; y++) {
+      xx = x + l2;
+      yy = y + t2;
+      if (xx >= l1 && xx < r1 && yy > t1 && yy < b1) {
+        array2[x + ]
+      } 
+    }
+  }
+}
+*/
 
 /* Geometry module */
  /* Put pixel to screen function */
@@ -41,9 +60,9 @@ app.get('/', (req, res) => {
 
 io.on('connection', socket => {
   socket.on('Am I first to create', (msg) => {
-    width = msg.w;
-    height = msg.h;
     if (first) {
+      width = msg.w;
+      height = msg.h;
       first = false;
       x = {r: 255, g:255, b:255, a:255}
       allFrame = new Array(width * height);
@@ -54,10 +73,14 @@ io.on('connection', socket => {
       bottom = height;
     } 
     else {
-      frame = Array(width * height);
-      for (let i = 0; i < width; i++) {
-        for (let j = 0; j < height; j++) {
-          frame[j * width + i] = allFrame[(i - left) +  width * (j - top)];
+      // if msg.w > width or h > h: remake array
+      ww = msg.w > width ? width : msg.w;
+      hh = msg.h > height ? height : msg.h;
+      frame = Array(hh * ww);
+      for (let i = 0; i < ww; i++) {
+        for (let j = 0; j < hh; j++) {
+          frame[j * msg.w + i] = allFrame[i +  width * j];
+          // frame[j * msg.w + i] = allFrame[(i - left) +  width * (j - top)];
         }
       }
       /* test filling works */
@@ -76,6 +99,7 @@ io.on('connection', socket => {
     color = msg.color;
     line(msg.x0, msg.y0, msg.x1, msg.y1);
     msg = {
+      color: color,
       x0: msg.x0, 
       y0: msg.y0, 
       x1: msg.x1, 

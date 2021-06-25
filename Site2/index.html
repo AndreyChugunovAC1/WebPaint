@@ -101,7 +101,7 @@
 
     function Color6() {
       globColor = {
-        r: 255,
+        r: 255  ,
         g: 255,
         b: 0,
         a: 255
@@ -127,15 +127,24 @@
       ctx.putImageData(img, x, y);
     }
 
+     /* Put pixel to screen function */
+     function setPixelColor(x, y, color) {
+      img.data[0] = color.r;
+      img.data[1] = color.g;
+      img.data[2] = color.b;
+      img.data[3] = color.a;
+      ctx.putImageData(img, x, y);
+    }
+
     /* draw line to canvas function */
-    function drawLine(x0, y0, x1, y1) {
+    function drawLine(x0, y0, x1, y1, color) {
       var dx = Math.abs(x1 - x0);
       var dy = Math.abs(y1 - y0);
       var sx = (x0 < x1) ? 1 : -1;
       var sy = (y0 < y1) ? 1 : -1;
       var err = dx - dy;
       while(true) {
-          setPixel(x0, y0);
+          setPixelColor(x0, y0, color);
           if ((x0 === x1) && (y0 === y1)) { break };
 
           var e2 = 2 * err;
@@ -168,8 +177,9 @@
       }
       ctx.putImageData(imgData, 0, 0);
     }) /* End of socket on */
+
     socket.on('Draw line', msg => {
-      drawLine(msg.x0, msg.y0, msg.x1, msg.y1);
+      drawLine(msg.x0, msg.y0, msg.x1, msg.y1, msg.color);
     })
 
     /* Initialization  */    
