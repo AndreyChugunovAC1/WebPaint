@@ -23,6 +23,25 @@
       modal.style.display = "none";
     }
 
+    function showLoginModal() {
+      let modal = document.getElementById("loginModal")
+      modal.style.display = "block";
+    }
+
+    function hideLoginModal() {
+      let data = document.getElementById('input_nick');
+      if (data.value.length > 10) {
+        alert("Nickname is too long!");
+      }
+      else {
+        let modal = document.getElementById("loginModal")
+        modal.style.display = "none";
+      }
+    }
+
+
+
+
     function dummyFunc() {
       alert("click!");
     }
@@ -52,56 +71,136 @@
         }
       }
     }
-
-
-    function submitColor() {
-      let color = '#000';
-
-
-    }
   </script>
 
   <script>
-    function userShowInfo() {
+    var red = 'rgb(255, 0, 0)';
+    var redA = 'rgb(255, 0, 0, 0.5)';
+
+    var blue = 'rgb(0, 0, 255)';
+    var blueA = 'rgb(0, 0, 255, 0.5)';
+
+    var yellow = 'rgb(255, 255, 0)';
+    var yellowA = 'rgb(255, 255, 0, 0.5)';
+
+    var black = 'rgb(128, 128, 128)';
+    var blackA = 'rgb(128, 128, 128, 0.5)';
+
+    var green = 'rgb(0, 255, 0)';
+    var greenA = 'rgb(0, 255, 0, 0.5)';
+
+    var brown = 'rgb(165, 42, 42)';
+    var brownA = 'rgb(165, 42, 42, 0.5)'
+
+    var pink = 'rgb(255, 192, 203)';
+    var pinkA = 'rgb(255, 192, 203, 0.5)'
+
+    var orange = 'rgb(255, 165, 0)';
+    var orangeA = 'rgb(255, 165, 0, 0.5)'
+
+    function changeColor(num) {
+      let root = document.documentElement
+      if (num == 1) {
+        root.style.setProperty('--main-color', red);
+        root.style.setProperty('--support-color', redA);
+      }
+      if (num == 2) {
+        root.style.setProperty('--main-color', blue);
+        root.style.setProperty('--support-color', blueA);
+      }
+      if (num == 3) {
+        root.style.setProperty('--main-color', yellow);
+        root.style.setProperty('--support-color', yellowA);
+      }
+      if (num == 4) {
+        root.style.setProperty('--main-color', black);
+        root.style.setProperty('--support-color', blackA);
+      }
+      if (num == 5) {
+        root.style.setProperty('--main-color', green);
+        root.style.setProperty('--support-color', greenA);
+      }
+      if (num == 6) {
+        root.style.setProperty('--main-color', brown);
+        root.style.setProperty('--support-color', brownA);
+      }
+      if (num == 7) {
+        root.style.setProperty('--main-color', pink);
+        root.style.setProperty('--support-color', pinkA);
+      }
+      if (num == 8) {
+        root.style.setProperty('--main-color', orange);
+        root.style.setProperty('--support-color', orangeA);
+      }
+      if (num == 9) {
+
+      }
+
     }
-
   </script>
-
 </head>
 
 
-<body>
+<body onload="showLoginModal()">
+  <!-- Log in -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Before start, You need to log in!</h2>
+      </div>
+      <div class="modal-body">
+        <label>Put your nickname here:</label><input type="text" id="input_nick"
+          placeholder="not more than 10 symbols" />
+      </div>
+      <div class="modal-footer">
+        <button id="reject" onclick="hideLoginModal()">Log in!</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Exit -->
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close" onclick="hideModal()">&times;</span>
+        <h2>Are you sure?</h2>
+      </div>
+      <div class="modal-body">
+        <p>Are you realizing the consequences of these actions?</p>
+      </div>
+      <div class="modal-footer">
+
+        <button id="accept" onclick="exitFunc()">Yes, I want to quit</button>
+        <button id="reject" onclick="hideModal()">No, I want to stay</button>
+      </div>
+    </div>
+  </div>
+
+
   <div id="container">
     <canvas id="drawfield"></canvas>
 
     <div id="user_interface_background">
       <div class="gradient-border"></div>
 
-      <div id="user_interface">
-        <div id="minimap"></div>
 
+      <div id="colorPallete">
+        <button id="red" class="color_btn raise" onclick="changeColor(1)">Red</button>
+        <button id="blue" class="color_btn right_btn raise" onclick="changeColor(2)">Blue</button><br>
+        <button id="yellow" class="color_btn second_line raise" onclick="changeColor(3)">Yellow</button>
+        <button id="black" class="color_btn right_btn second_line raise" onclick="changeColor(4)">Black</button><br>
+        <button id="green" class="color_btn third_line raise" onclick="changeColor(5)">Green</button>
+        <button id="brown" class="color_btn right_btn third_line raise" onclick="changeColor(6)">Brown</button><br>
+        <button id="pink" class="color_btn last_line raise" onclick="changeColor(7)">Pink</button>
+        <button id="orange" class="color_btn right_btn last_line raise" onclick="changeColor(8)">Orange</button><br>
       </div>
+      <button id="rubber" class="raise"> Rubber</button>
+
       <div id="exit_btn">
-        <button id="btn1" class="additional_btn" onclick="fullScreen()">Full screen</button><br>
-        <button id="btn2" class="additional_btn" onclick="dummyFunc()">Info</button><br>
+        <button id="btn1" class="additional_btn" onclick="dummyFunc()">Clear desk</button><br>
+        <button id="btn2" class="additional_btn" onclick="fullScreen()">Full screen</button><br>
         <button id="btn3" class="additional_btn" onclick="showModal()">Exit</button>
-      </div>
-    </div>
-    <!-- Modal -->
-    <div id="myModal" class="modal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <span class="close" onclick="hideModal()">&times;</span>
-          <h2>Are you sure?</h2>
-        </div>
-        <div class="modal-body">
-          <p>Are you realizing the consequences of these actions?</p>
-        </div>
-        <div class="modal-footer">
-
-          <button id="accept" onclick="exitFunc()">Yes, I want to quit</button>
-          <button id="reject" onclick="hideModal()">No, I want to stay</button>
-        </div>
       </div>
     </div>
   </div>
